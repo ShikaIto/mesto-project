@@ -1,15 +1,21 @@
 .profile__caption {
+  display: inline-block;
   color: #fff;
   font-weight: 400;
   font-size: 18px;
   line-height: 21px;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 900px) {
   .profile__caption {
-    justify-self: center;
-    margin-block-end: 36px;
+    width: 220px;
+    justify-self: end;
+    margin: 0 15px 34px 0;
+    text-align: right;
   }
 }
 

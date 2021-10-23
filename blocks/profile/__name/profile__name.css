@@ -1,15 +1,21 @@
 .profile__name {
+  display: inline-block;
   color: #fff;
   font-weight: 500;
   font-size: 42px;
   line-height: 48px;
   margin: 0;
   align-self: end;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media screen and (max-width: 900px) {
   .profile__name {
+    width: 220px;
     justify-self: end;
+    text-align: right;
   }
 }
 

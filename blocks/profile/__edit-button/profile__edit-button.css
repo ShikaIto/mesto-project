@@ -8,6 +8,8 @@
   border: none;
   transition: opacity 0.3s ease;
   padding: 0;
+  background-image: url("../../../images/Edit-Button.svg");
+  background-size: contain;
 }
 
 .profile__edit-button:hover {
