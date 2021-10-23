@@ -4,6 +4,7 @@
   grid-template-rows: auto;
   row-gap: 16px;
   max-width: 336px;
+  column-gap: 18px;
 }
 
 @media screen and (max-width: 900px) {
