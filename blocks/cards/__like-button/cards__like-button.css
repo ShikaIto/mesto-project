@@ -7,13 +7,8 @@
   cursor: pointer;
   border: none;
   transition: opacity 0.3s ease;
-  align-self: center;
 }
 
 .cards__like-button:hover {
   opacity: 0.5;
-}
-
-.cards__like-button:active {
-  background-image: url("../../../images/like-button_active.svg");
 }

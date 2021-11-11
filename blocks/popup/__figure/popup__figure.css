@@ -1,0 +1,5 @@
+.popup__figure {
+  align-self: center;
+  position: relative;
+  z-index: 2;
+}
