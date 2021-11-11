@@ -7,8 +7,9 @@
 - Flex
 - Grid Layout
 - Медиа-запросы CSS
+- Java Script
 
-#### Планируется оживить сайт с помощью Java Script
+#### Планируется добавить еще немного Java Script
 
 ### GitHub
 
