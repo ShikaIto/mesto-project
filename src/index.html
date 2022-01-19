@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mesto</title>
-    <link rel="stylesheet" href="./pages/index.css" />
   </head>
   <body class="page">
     <header class="header page__block">
@@ -14,7 +13,7 @@
     <main>
       <section class="profile page__block">
         <div class="profile__avatar-container">
-          <img class="profile__avatar" alt="мужчина в красной шапке" src="./images/kusto.jpg" />
+          <img class="profile__avatar" alt="мужчина в красной шапке" src="<%=require('./images/kusto.jpg')%>" />
           <button type="button" class="profile__avatar-button"></button>
         </div>
         <div class="profile__info">
@@ -155,7 +154,5 @@
         </div>
       </li>
     </template>
-
-    <script src="./index.js"></script>
   </body>
 </html>
