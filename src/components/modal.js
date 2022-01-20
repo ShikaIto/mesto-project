@@ -8,39 +8,38 @@ const popupAvatar = document.querySelector("#popup-avatar");
 const buttonAvatar = document.querySelector(".profile__avatar-button");
 const popupDelete = document.querySelector("#popup-delete");
 
-function closePopup(popupName) {
-    popupName.classList.remove("popup_opened");
+function closeByEscape(evt) {
+  if (evt.key === "Escape") {
+    closePopup(document.querySelector(".popup_opened"));
   }
-function openedPopup(popupName) {
-  popupName.classList.add("popup_opened");
 }
-
-document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Escape") {
-      closePopup(document.querySelector(".popup_opened"));
+function closePopup(popup) {
+  popup.classList.remove("popup_opened");
+  document.removeEventListener("keydown", closeByEscape);
+}
+function openPopup(popup) {
+  popup.classList.add("popup_opened");
+  document.addEventListener("keydown", closeByEscape);
+}
+  
+Array.from(document.querySelectorAll(".popup")).forEach((elem) => {
+  elem.addEventListener("mousedown", (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(elem);
+    } else if (evt.target.classList.contains('popup__close-button')) {
+      closePopup(elem);
     }
-  });
-  
-document.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("popup_opened")) {
-    closePopup(evt.target);
-  }
-});
-  
-Array.from(document.querySelectorAll(".popup__close-button")).forEach((elem) => {
-  elem.addEventListener("click", (evt) => {
-    closePopup(evt.target.closest(".popup"));
   });
 });
   
 buttonAdd.addEventListener("click", () => {
-  openedPopup(popupAdd);
+  openPopup(popupAdd);
 });
 buttonEdit.addEventListener("click", () => {
-  openedPopup(popupEdit);
+  openPopup(popupEdit);
 });
 buttonAvatar.addEventListener("click", () => {
-  openedPopup(popupAvatar);
+  openPopup(popupAvatar);
 });
 
 popupDelete.querySelector(".popup__submit").addEventListener("click", () => {
@@ -48,4 +47,4 @@ popupDelete.querySelector(".popup__submit").addEventListener("click", () => {
   closePopup(popupDelete);
 });
 
-export { closePopup, popupAvatar, popupEdit, openedPopup, popupDelete, popupAdd };
+export { closePopup, popupAvatar, popupEdit, openPopup, popupDelete, popupAdd };
