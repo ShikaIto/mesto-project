@@ -29,6 +29,8 @@ const initialCards = [
 export const cardsContainer = document.querySelector(".cards__list");
 const popupImage = document.querySelector("#popup-image");
 let deleteElem = "";
+const popupImg = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__image-caption");
 
 export function createCard(imageLink, imageName) {
   const cardTemplate = document.querySelector("#card-template").content;
@@ -40,13 +42,10 @@ export function createCard(imageLink, imageName) {
   cardImage.setAttribute("alt", imageName);
 
   cardImage.addEventListener("click", (evt) => {
-    const image = evt.target.getAttribute("src");
-    const name = evt.target.getAttribute("alt");
-    const popupImg = document.querySelector(".popup__image");
     openPopup(popupImage);
-    document.querySelector(".popup__image-caption").textContent = name;
-    popupImg.setAttribute("src", image);
-    popupImg.setAttribute("alt", name);
+    popupCaption.textContent = imageName;
+    popupImg.setAttribute("src", imageLink);
+    popupImg.setAttribute("alt", imageName);
   });
 
   cardElement.querySelector(".cards__like-button").addEventListener("click", (evt) => {

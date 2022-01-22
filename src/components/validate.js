@@ -1,27 +1,20 @@
-import { popupAvatar, closePopup, popupAdd } from "./modal.js";
-import { createCard, addCard, cardsContainer } from "./card.js";
-
-export function enableValidation (obj) {
-  const formAvatar = document.forms.avatar;
-  const formAdd = document.forms.add;
-
-    function showImputError(formElement, inputElement, errorMessage) {
+    function showImputError(formElement, inputElement, errorMessage, obj) {
         const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
         inputElement.classList.add(obj.inputErrorClass);
         errorElement.textContent = errorMessage;
         errorElement.classList.add(obj.errorClass);
       }
-      function hideInputError(formElement, inputElement) {
+      function hideInputError(formElement, inputElement, obj) {
         const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
         inputElement.classList.remove(obj.inputErrorClass);
         errorElement.classList.remove(obj.errorClass);
         errorElement.textContent = "";
       }
-      function checkInputValidity(formElement, inputElement) {
+      function checkInputValidity(formElement, inputElement, obj) {
         if (!inputElement.validity.valid) {
-          showImputError(formElement, inputElement, inputElement.validationMessage);
+          showImputError(formElement, inputElement, inputElement.validationMessage, obj);
         } else {
-          hideInputError(formElement, inputElement);
+          hideInputError(formElement, inputElement, obj);
         }
       }
       function hasInvalidInput(inputList) {
@@ -29,7 +22,7 @@ export function enableValidation (obj) {
           return !inputElement.validity.valid;
         });
       }
-      function toggleButtonState(inputList, buttonElement) {
+      export function toggleButtonState(inputList, buttonElement, obj) {
         if (hasInvalidInput(inputList)) {
         buttonElement.classList.add(obj.inactiveButtonClass);
         buttonElement.setAttribute("disabled", "true");
@@ -38,37 +31,20 @@ export function enableValidation (obj) {
         buttonElement.removeAttribute("disabled");
       } 
       }
-      function setEventListeners(formElement) {
+      function setEventListeners(formElement, obj) {
         const inputList = Array.from(formElement.querySelectorAll(obj.inputSelector));
         const buttonElement = formElement.querySelector(obj.submitButtonSelector);
-        toggleButtonState(inputList, buttonElement);
+        toggleButtonState(inputList, buttonElement, obj);
         inputList.forEach((inputElement) => {
           inputElement.addEventListener("input", () => {
-            toggleButtonState(inputList, buttonElement);
-            checkInputValidity(formElement, inputElement);
+            toggleButtonState(inputList, buttonElement, obj);
+            checkInputValidity(formElement, inputElement, obj);
           });
         });
       }
-    
-      Array.from(document.forms).forEach((formElement) => {
-        setEventListeners(formElement);
-      });
 
-      formAdd.addEventListener("submit", (evt) => {
-        evt.preventDefault();
-        addCard(cardsContainer, createCard(formAdd.elements.image.value, formAdd.elements.name.value));
-        closePopup(popupAdd);
-        formAdd.reset();
-        const addInputList = Array.from(formAdd.querySelectorAll(obj.inputSelector));
-        toggleButtonState(addInputList, formAdd.elements.submit);
-      });
-      
-      formAvatar.addEventListener("submit", (evt) => {
-        evt.preventDefault();
-        document.querySelector(".profile__avatar").setAttribute("src", formAvatar.elements.image.value);
-        closePopup(popupAvatar);
-        formAvatar.reset();
-        const avatarInputList = Array.from(formAvatar.querySelectorAll(obj.inputSelector));
-        toggleButtonState(avatarInputList, formAvatar.elements.submit);
-      });
-}
+      export function enableValidation (obj) {
+        Array.from(document.forms).forEach((formElement) => {
+          setEventListeners(formElement, obj);
+        });
+      }
