@@ -1,16 +1,12 @@
 import { openPopup, popupDelete, openPopupDelete } from "./modal.js";
 import { deleteCardFromServer, addLikeCard, removeLikeCard } from "./api.js";
+import { profileId } from "../pages/index.js";
 
 export const cardsContainer = document.querySelector(".cards__list");
 const popupImage = document.querySelector("#popup-image");
 const popupImg = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__image-caption");
 const cards = {};
-let profileId = "";
-
-export function getProfileId(userId) {
- profileId = userId;
-}
 
 export function createButtonDelete() {
   const buttonDelete = document.createElement("button");
@@ -25,9 +21,21 @@ export function addCard(container, element) {
 
 function likeCard(element, button, cardId) {
   if(button.classList.contains("cards__like-button_active")) {
-    addLikeCard(cardId, element);
+    addLikeCard(cardId)
+    .then((res) => {
+      element.textContent = res.likes.length;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   } else {
-    removeLikeCard(cardId, element);
+    removeLikeCard(cardId)
+    .then((res) => {
+    element.textContent = res.likes.length;
+  })
+  .catch((err) => {
+    console.log(err);
+  })
   }
   
 }
@@ -42,16 +50,19 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
   cardImage.setAttribute("src", imageLink);
   cardElement.querySelector(".cards__title").textContent = imageName;
   cardImage.setAttribute("alt", imageName);
-  likeCounter.textContent = likes.length;
-  
-  likes.forEach((elem) => {
-    if(elem._id === profileId) {
-      likeButton.classList.add("cards__like-button_active");
-    }
-  })
 
-  cards[imageLink] = cardId;
-  if (ownerId === profileId || ownerId === undefined) {
+  if (cardId) {
+    likeCounter.textContent = likes.length;
+  
+    likes.forEach((elem) => {
+      if(elem._id === profileId) {
+        likeButton.classList.add("cards__like-button_active");
+      }
+    })
+    cards[imageLink] = cardId;
+  }
+
+  if (ownerId === profileId || !ownerId) {
     addCard(cardElement, createButtonDelete());
   }
 

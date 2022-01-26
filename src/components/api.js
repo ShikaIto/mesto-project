@@ -1,6 +1,5 @@
 import { inputProfileJob, inputProfileName, inputProfileAvatar, inputCardName, 
   inputCardImage } from "../pages/index.js";
-import { cardsContainer, addCard, createCard, getProfileId } from "./card.js";
 
 const config = {
     baseUrl: "https://mesto.nomoreparties.co/v1/plus-cohort-6",
@@ -18,23 +17,12 @@ function checkStatus(res) {
   }
 }
 
-export  const profileInfo = (name, caption, avatar) => {
+export  const profileInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "GET",
     headers: config.headers
   })
   .then(checkStatus)
-  .then((info) => {
-    name.textContent = info.name;
-    caption.textContent = info.about;
-    avatar.src = info.avatar;
-    getProfileId(info._id);
-    inputProfileName.value = info.name;
-    inputProfileJob.value = info.about;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
 export const saveProfileInfo = () => {
@@ -64,14 +52,6 @@ export const cardInfo = () => {
     headers: config.headers
   })
   .then(checkStatus)
-  .then((cards) => {
-    cards.forEach((card) => {
-      addCard(cardsContainer, createCard(card.link, card.name, card._id, card.owner._id, card.likes));
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
 export const saveCard = () => {
@@ -96,30 +76,18 @@ export const deleteCardFromServer = (cardId) => {
   })
 }
 
-export const addLikeCard = (cardId, element) => {
+export const addLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers
   })
   .then(checkStatus)
-  .then((res) => {
-    element.textContent = res.likes.length;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
-export const removeLikeCard = (cardId, element) => {
+export const removeLikeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers
   })
   .then(checkStatus)
-  .then((res) => {
-    element.textContent = res.likes.length;
-  })
-  .catch((err) => {
-    console.log(err);
-  })
 }

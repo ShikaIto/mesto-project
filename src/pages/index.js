@@ -2,7 +2,7 @@ import './index.css';
 
 import { enableValidation, toggleButtonState } from "../components/validate.js";
 import { closePopup, popupEdit, popupAdd, popupAvatar } from "../components/modal.js";
-import { createCard, addCard, cardsContainer, createButtonDelete } from "../components/card.js";
+import { createCard, addCard, cardsContainer } from "../components/card.js";
 import { profileInfo, cardInfo, saveProfileInfo, saveProfileAvatar, saveCard } from '../components/api.js';
 
 const formEdit = document.forms.edit;
@@ -25,7 +25,7 @@ const obj = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__error_active"
 };
-
+export let profileId = "";
 
 enableValidation(obj);
 
@@ -73,5 +73,29 @@ formAvatar.addEventListener("submit", (evt) => {
   const avatarInputList = Array.from(formAvatar.querySelectorAll(obj.inputSelector));
   toggleButtonState(avatarInputList, submit, obj);
 });
-profileInfo(profileName, profileCaption, profileAvatar);
-cardInfo();
+
+profileInfo()
+.then((info) => {
+  profileName.textContent = info.name;
+  profileCaption.textContent = info.about;
+  profileAvatar.src = info.avatar;
+  inputProfileName.value = info.name;
+  inputProfileJob.value = info.about;
+  return info._id
+})
+.then((res) => {
+  profileId = res
+})
+.catch((err) => {
+  console.log(err);
+})
+
+cardInfo()
+.then((cards) => {
+  cards.forEach((card) => {
+    addCard(cardsContainer, createCard(card.link, card.name, card._id, card.owner._id, card.likes));
+  });
+})
+.catch((err) => {
+  console.log(err);
+})
