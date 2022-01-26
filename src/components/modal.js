@@ -1,25 +1,35 @@
-import { deleteElem } from "./card.js";
+import { deleteCard } from "./card.js";
 
-const popupAdd = document.querySelector("#popup-add");
-const popupEdit = document.querySelector("#popup-edit");
+export const popupAdd = document.querySelector("#popup-add");
+export const popupEdit = document.querySelector("#popup-edit");
 const buttonAdd = document.querySelector(".profile__add-button");
 const buttonEdit = document.querySelector(".profile__edit-button");
-const popupAvatar = document.querySelector("#popup-avatar");
+export const popupAvatar = document.querySelector("#popup-avatar");
 const buttonAvatar = document.querySelector(".profile__avatar-button");
-const popupDelete = document.querySelector("#popup-delete");
+export const popupDelete = document.querySelector("#popup-delete");
+const popupDeleteBtn = popupDelete.querySelector(".popup__submit");
 
 function closeByEscape(evt) {
   if (evt.key === "Escape") {
     closePopup(document.querySelector(".popup_opened"));
   }
 }
-function closePopup(popup) {
+export function closePopup(popup) {
   popup.classList.remove("popup_opened");
   document.removeEventListener("keydown", closeByEscape);
 }
-function openPopup(popup) {
+export function openPopup(popup) {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", closeByEscape);
+}
+
+export function openPopupDelete(popup, deleteElem, deleteId) {
+  popup.classList.add("popup_opened");
+  document.addEventListener("keydown", closeByEscape);
+  popupDeleteBtn.addEventListener("click", () => {
+    deleteCard(deleteElem, deleteId);
+    closePopup(popupDelete);
+  });
 }
   
 Array.from(document.querySelectorAll(".popup")).forEach((elem) => {
@@ -41,10 +51,3 @@ buttonEdit.addEventListener("click", () => {
 buttonAvatar.addEventListener("click", () => {
   openPopup(popupAvatar);
 });
-
-popupDelete.querySelector(".popup__submit").addEventListener("click", () => {
-  deleteElem.remove();
-  closePopup(popupDelete);
-});
-
-export { closePopup, popupAvatar, popupEdit, openPopup, popupDelete, popupAdd };

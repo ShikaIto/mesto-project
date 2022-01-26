@@ -2,11 +2,17 @@ import './index.css';
 
 import { enableValidation, toggleButtonState } from "../components/validate.js";
 import { closePopup, popupEdit, popupAdd, popupAvatar } from "../components/modal.js";
-import { createCard, addCard, cardsContainer } from "../components/card.js";
+import { createCard, addCard, cardsContainer, createButtonDelete } from "../components/card.js";
+import { profileInfo, cardInfo, saveProfileInfo, saveProfileAvatar, saveCard } from '../components/api.js';
 
 const formEdit = document.forms.edit;
 const formAvatar = document.forms.avatar;
 const formAdd = document.forms.add;
+export const inputCardImage = formAdd.elements.image;
+export const inputCardName = formAdd.elements.name;
+export const inputProfileName = formEdit.elements.name;
+export const inputProfileJob = formEdit.elements.job;
+export const inputProfileAvatar = formAvatar.elements.image;
 const avatar = document.querySelector(".profile__avatar-container");
 const avatarBtn = document.querySelector(".profile__avatar-button");
 const profileName =  document.querySelector(".profile__name");
@@ -33,25 +39,39 @@ avatar.addEventListener("mouseout", () => {
 
 formEdit.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  profileName.textContent = formEdit.elements.name.value;
-  profileCaption.textContent = formEdit.elements.job.value;
+  const submit = formEdit.elements.submit;
+  submit.textContent = "Coхранение...";
+  profileName.textContent = inputProfileName.value;
+  profileCaption.textContent = inputProfileJob.value;
+  saveProfileInfo();
   closePopup(popupEdit);
+  submit.textContent = "Сохранить";
 });
 
 formAdd.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  addCard(cardsContainer, createCard(formAdd.elements.image.value, formAdd.elements.name.value));
+  const submit = formAdd.elements.submit;
+  submit.textContent = "Coхранение...";
+  addCard(cardsContainer, createCard(inputCardImage.value, inputCardName.value));
+  saveCard();
   closePopup(popupAdd);
+  submit.textContent = "Создать";
   formAdd.reset();
   const addInputList = Array.from(formAdd.querySelectorAll(obj.inputSelector));
-  toggleButtonState(addInputList, formAdd.elements.submit, obj);
+  toggleButtonState(addInputList, submit, obj);
 });
 
 formAvatar.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  profileAvatar.setAttribute("src", formAvatar.elements.image.value);
+  const submit = formAvatar.elements.submit;
+  submit.textContent = "Coхранение...";
+  profileAvatar.setAttribute("src", inputProfileAvatar.value);
+  saveProfileAvatar();
   closePopup(popupAvatar);
+  submit.textContent = "Сохранить";
   formAvatar.reset();
   const avatarInputList = Array.from(formAvatar.querySelectorAll(obj.inputSelector));
-  toggleButtonState(avatarInputList, formAvatar.elements.submit, obj);
+  toggleButtonState(avatarInputList, submit, obj);
 });
+profileInfo(profileName, profileCaption, profileAvatar);
+cardInfo();
