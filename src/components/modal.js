@@ -7,7 +7,7 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 export const popupAvatar = document.querySelector("#popup-avatar");
 const buttonAvatar = document.querySelector(".profile__avatar-button");
 export const popupDelete = document.querySelector("#popup-delete");
-const popupDeleteBtn = popupDelete.querySelector(".popup__submit");
+export const popupDeleteBtn = popupDelete.querySelector(".popup__submit");
 
 function closeByEscape(evt) {
   if (evt.key === "Escape") {
@@ -23,13 +23,10 @@ export function openPopup(popup) {
   document.addEventListener("keydown", closeByEscape);
 }
 
-export function openPopupDelete(popup, deleteElem, deleteId) {
-  popup.classList.add("popup_opened");
+export function openPopupDelete() {
+  popupDelete.classList.add("popup_opened");
   document.addEventListener("keydown", closeByEscape);
-  popupDeleteBtn.addEventListener("click", () => {
-    deleteCard(deleteElem, deleteId);
-    closePopup(popupDelete);
-  });
+  popupDeleteBtn.addEventListener("click", deleteCard);
 }
   
 Array.from(document.querySelectorAll(".popup")).forEach((elem) => {

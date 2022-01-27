@@ -1,6 +1,3 @@
-import { inputProfileJob, inputProfileName, inputProfileAvatar, inputCardName, 
-  inputCardImage } from "../pages/index.js";
-
 const config = {
     baseUrl: "https://mesto.nomoreparties.co/v1/plus-cohort-6",
     headers: {
@@ -25,25 +22,27 @@ export  const profileInfo = () => {
   .then(checkStatus)
 }
 
-export const saveProfileInfo = () => {
+export const saveProfileInfo = (name, about) => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      name: inputProfileName.value,
-      about: inputProfileJob.value
+      name: name,
+      about: about
     })
-  }) 
+  })
+  .then(checkStatus) 
 }
 
-export const saveProfileAvatar = () => {
+export const saveProfileAvatar = (avatar) => {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar: inputProfileAvatar.value
+      avatar: avatar
     })
   })
+  .then(checkStatus)
 }
 
 export const cardInfo = () => {
@@ -54,15 +53,16 @@ export const cardInfo = () => {
   .then(checkStatus)
 }
 
-export const saveCard = () => {
+export const saveCard = (name, link) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: config.headers,
     body: JSON.stringify({
-      name: inputCardName.value,
-      link: inputCardImage.value
+      name: name,
+      link: link
     })
   })
+  .then(checkStatus)
 }
 
 export const deleteCardFromServer = (cardId) => {
@@ -82,6 +82,9 @@ export const addLikeCard = (cardId) => {
     headers: config.headers
   })
   .then(checkStatus)
+  .catch((err) => {
+    console.log(err);
+  })
 }
 
 export const removeLikeCard = (cardId) => {
@@ -90,4 +93,7 @@ export const removeLikeCard = (cardId) => {
     headers: config.headers
   })
   .then(checkStatus)
+  .catch((err) => {
+    console.log(err);
+  })
 }

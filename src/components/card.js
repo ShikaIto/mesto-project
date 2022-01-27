@@ -1,4 +1,4 @@
-import { openPopup, popupDelete, openPopupDelete } from "./modal.js";
+import { openPopup, popupDelete, openPopupDelete, closePopup, popupDeleteBtn } from "./modal.js";
 import { deleteCardFromServer, addLikeCard, removeLikeCard } from "./api.js";
 import { profileId } from "../pages/index.js";
 
@@ -7,6 +7,8 @@ const popupImage = document.querySelector("#popup-image");
 const popupImg = document.querySelector(".popup__image");
 const popupCaption = document.querySelector(".popup__image-caption");
 const cards = {};
+let deleteElem;
+let deleteId;
 
 export function createButtonDelete() {
   const buttonDelete = document.createElement("button");
@@ -50,19 +52,16 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
   cardImage.setAttribute("src", imageLink);
   cardElement.querySelector(".cards__title").textContent = imageName;
   cardImage.setAttribute("alt", imageName);
-
-  if (cardId) {
-    likeCounter.textContent = likes.length;
+  likeCounter.textContent = likes.length;
   
-    likes.forEach((elem) => {
-      if(elem._id === profileId) {
-        likeButton.classList.add("cards__like-button_active");
-      }
-    })
-    cards[imageLink] = cardId;
-  }
+  likes.forEach((elem) => {
+    if(elem._id === profileId) {
+      likeButton.classList.add("cards__like-button_active");
+    }
+  })
+  cards[imageLink] = cardId;
 
-  if (ownerId === profileId || !ownerId) {
+  if (ownerId === profileId) {
     addCard(cardElement, createButtonDelete());
   }
 
@@ -81,16 +80,18 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
   const deleteBtn = cardElement.querySelector(".cards__delete-button");
   if (deleteBtn) {
     deleteBtn.addEventListener("click", (evt) => {
-      const deleteElem = evt.target.closest(".cards__item");
-      const key = deleteElem.querySelector(".cards__image").src;
-     openPopupDelete(popupDelete, deleteElem, cards[key]);
+      deleteElem = evt.target.closest(".cards__item");
+      deleteId = cards[deleteElem.querySelector(".cards__image").src];
+      openPopupDelete();
    });
   }
 
   return cardElement;
 }
 
-export function deleteCard(deleteElem, deleteId) {
+export function deleteCard() {
   deleteElem.remove();
   deleteCardFromServer(deleteId);
+  closePopup(popupDelete);
+  popupDeleteBtn.removeEventListener("click", deleteCard);
 }
