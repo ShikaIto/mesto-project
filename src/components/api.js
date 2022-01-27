@@ -1,10 +1,4 @@
-const config = {
-    baseUrl: "https://mesto.nomoreparties.co/v1/plus-cohort-6",
-    headers: {
-      authorization: "df2a87c1-ee4d-42a8-8cbf-5bf5b4af8b77",
-      "Content-Type": "application/json"
-    }
-  }
+import { config } from "../utils/constants.js";
 
 function checkStatus(res) {
   if(res.ok) {
@@ -14,7 +8,7 @@ function checkStatus(res) {
   }
 }
 
-export  const profileInfo = () => {
+export  const getProfileInfo = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "GET",
     headers: config.headers
@@ -45,7 +39,7 @@ export const saveProfileAvatar = (avatar) => {
   .then(checkStatus)
 }
 
-export const cardInfo = () => {
+export const getAllCards = () => {
   return fetch(`${config.baseUrl}/cards`, {
     method: "GET",
     headers: config.headers
@@ -71,9 +65,6 @@ export const deleteCardFromServer = (cardId) => {
     headers: config.headers
   })
   .then(checkStatus)
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
 export const addLikeCard = (cardId) => {
@@ -82,9 +73,6 @@ export const addLikeCard = (cardId) => {
     headers: config.headers
   })
   .then(checkStatus)
-  .catch((err) => {
-    console.log(err);
-  })
 }
 
 export const removeLikeCard = (cardId) => {
@@ -93,7 +81,4 @@ export const removeLikeCard = (cardId) => {
     headers: config.headers
   })
   .then(checkStatus)
-  .catch((err) => {
-    console.log(err);
-  })
 }

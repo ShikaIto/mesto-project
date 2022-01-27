@@ -1,13 +1,6 @@
 import { deleteCard } from "./card.js";
-
-export const popupAdd = document.querySelector("#popup-add");
-export const popupEdit = document.querySelector("#popup-edit");
-const buttonAdd = document.querySelector(".profile__add-button");
-const buttonEdit = document.querySelector(".profile__edit-button");
-export const popupAvatar = document.querySelector("#popup-avatar");
-const buttonAvatar = document.querySelector(".profile__avatar-button");
-export const popupDelete = document.querySelector("#popup-delete");
-export const popupDeleteBtn = popupDelete.querySelector(".popup__submit");
+import { popupAdd, popupEdit, buttonAdd, buttonAvatar, buttonEdit, popupAvatar, 
+popupDelete, popupDeleteBtn } from "../utils/constants.js"
 
 function closeByEscape(evt) {
   if (evt.key === "Escape") {
@@ -21,12 +14,9 @@ export function closePopup(popup) {
 export function openPopup(popup) {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", closeByEscape);
-}
-
-export function openPopupDelete() {
-  popupDelete.classList.add("popup_opened");
-  document.addEventListener("keydown", closeByEscape);
-  popupDeleteBtn.addEventListener("click", deleteCard);
+  if(popup === popupDelete) {
+    popupDeleteBtn.addEventListener("click", deleteCard);
+  }
 }
   
 Array.from(document.querySelectorAll(".popup")).forEach((elem) => {

@@ -1,12 +1,8 @@
-import { openPopup, popupDelete, openPopupDelete, closePopup, popupDeleteBtn } from "./modal.js";
+import { openPopup, closePopup } from "./modal.js";
 import { deleteCardFromServer, addLikeCard, removeLikeCard } from "./api.js";
 import { profileId } from "../pages/index.js";
+import { popupImage, popupImg, popupCaption, cards, popupDelete, popupDeleteBtn } from "../utils/constants.js";
 
-export const cardsContainer = document.querySelector(".cards__list");
-const popupImage = document.querySelector("#popup-image");
-const popupImg = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__image-caption");
-const cards = {};
 let deleteElem;
 let deleteId;
 
@@ -23,17 +19,20 @@ export function addCard(container, element) {
 
 function likeCard(element, button, cardId) {
   if(button.classList.contains("cards__like-button_active")) {
-    addLikeCard(cardId)
+    removeLikeCard(cardId)
     .then((res) => {
+      console.log("ok");
       element.textContent = res.likes.length;
+      button.classList.remove("cards__like-button_active");
     })
     .catch((err) => {
       console.log(err);
     })
   } else {
-    removeLikeCard(cardId)
+    addLikeCard(cardId)
     .then((res) => {
     element.textContent = res.likes.length;
+    button.classList.add("cards__like-button_active");
   })
   .catch((err) => {
     console.log(err);
@@ -72,9 +71,8 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
     popupImg.setAttribute("alt", imageName);
   });
 
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("cards__like-button_active");
-    likeCard(likeCounter, likeButton, cardId);
+  likeButton.addEventListener("click", (evt) => {
+    likeCard(likeCounter, evt.target, cardId);
   });
   
   const deleteBtn = cardElement.querySelector(".cards__delete-button");
@@ -82,7 +80,7 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
     deleteBtn.addEventListener("click", (evt) => {
       deleteElem = evt.target.closest(".cards__item");
       deleteId = cards[deleteElem.querySelector(".cards__image").src];
-      openPopupDelete();
+      openPopup(popupDelete);
    });
   }
 
@@ -90,8 +88,13 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
 }
 
 export function deleteCard() {
-  deleteElem.remove();
-  deleteCardFromServer(deleteId);
-  closePopup(popupDelete);
+  deleteCardFromServer(deleteId)
+  .then(() => {
+    deleteElem.remove();
+    closePopup(popupDelete);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
   popupDeleteBtn.removeEventListener("click", deleteCard);
 }
