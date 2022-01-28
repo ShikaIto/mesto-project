@@ -23,7 +23,6 @@ export const cardsContainer = document.querySelector(".cards__list");
 export const popupImage = document.querySelector("#popup-image");
 export const popupImg = document.querySelector(".popup__image");
 export const popupCaption = document.querySelector(".popup__image-caption");
-export const cards = {};
 
 export const popupAdd = document.querySelector("#popup-add");
 export const popupEdit = document.querySelector("#popup-edit");

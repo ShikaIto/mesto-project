@@ -14,9 +14,6 @@ export function closePopup(popup) {
 export function openPopup(popup) {
   popup.classList.add("popup_opened");
   document.addEventListener("keydown", closeByEscape);
-  if(popup === popupDelete) {
-    popupDeleteBtn.addEventListener("click", deleteCard);
-  }
 }
   
 Array.from(document.querySelectorAll(".popup")).forEach((elem) => {

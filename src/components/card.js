@@ -1,7 +1,7 @@
 import { openPopup, closePopup } from "./modal.js";
 import { deleteCardFromServer, addLikeCard, removeLikeCard } from "./api.js";
 import { profileId } from "../pages/index.js";
-import { popupImage, popupImg, popupCaption, cards, popupDelete, popupDeleteBtn } from "../utils/constants.js";
+import { popupImage, popupImg, popupCaption, popupDelete, popupDeleteBtn } from "../utils/constants.js";
 
 let deleteElem;
 let deleteId;
@@ -58,7 +58,6 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
       likeButton.classList.add("cards__like-button_active");
     }
   })
-  cards[imageLink] = cardId;
 
   if (ownerId === profileId) {
     addCard(cardElement, createButtonDelete());
@@ -79,8 +78,9 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
   if (deleteBtn) {
     deleteBtn.addEventListener("click", (evt) => {
       deleteElem = evt.target.closest(".cards__item");
-      deleteId = cards[deleteElem.querySelector(".cards__image").src];
+      deleteId = cardId;
       openPopup(popupDelete);
+      popupDeleteBtn.addEventListener("click", deleteCard);
    });
   }
 
@@ -96,5 +96,4 @@ export function deleteCard() {
   .catch((err) => {
     console.log(err);
   })
-  popupDeleteBtn.removeEventListener("click", deleteCard);
 }
