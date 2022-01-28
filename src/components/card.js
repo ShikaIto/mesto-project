@@ -80,7 +80,6 @@ export function createCard(imageLink, imageName, cardId, ownerId, likes) {
       deleteElem = evt.target.closest(".cards__item");
       deleteId = cardId;
       openPopup(popupDelete);
-      popupDeleteBtn.addEventListener("click", deleteCard);
    });
   }
 
@@ -97,3 +96,5 @@ export function deleteCard() {
     console.log(err);
   })
 }
+
+popupDeleteBtn.addEventListener("click", deleteCard);
