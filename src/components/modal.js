@@ -1,6 +1,4 @@
-import { deleteCard } from "./card.js";
-import { popupAdd, popupEdit, buttonAdd, buttonAvatar, buttonEdit, popupAvatar, 
-popupDelete, popupDeleteBtn } from "../utils/constants.js"
+import { popupAdd, popupEdit, buttonAdd, buttonAvatar, buttonEdit, popupAvatar } from "../utils/constants.js"
 
 function closeByEscape(evt) {
   if (evt.key === "Escape") {

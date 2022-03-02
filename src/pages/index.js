@@ -3,12 +3,14 @@ import './index.css';
 import { enableValidation, toggleButtonState } from "../components/validate.js";
 import { closePopup } from "../components/modal.js";
 import { createCard, addCard } from "../components/card.js";
-import { getProfileInfo, getAllCards, saveProfileInfo, saveProfileAvatar, saveCard } from "../components/api.js";
+import { Api } from "../components/api.js";
 import { formEdit, formAvatar, formAdd, inputCardImage, inputCardName, inputProfileAvatar,
 inputProfileJob, inputProfileName, avatar, avatarBtn, profileAvatar, profileCaption,
-profileName, obj, cardsContainer, popupAdd, popupEdit, popupAvatar } from "../utils/constants.js";
+profileName, obj, cardsContainer, popupAdd, popupEdit, popupAvatar, config } from "../utils/constants.js";
 
 export let profileId = "";
+
+export const api = new Api(config);
 
 enableValidation(obj);
 
@@ -24,7 +26,7 @@ formEdit.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const submit = formEdit.elements.submit;
   submit.textContent = "Coхранение...";
-  saveProfileInfo(inputProfileName.value, inputProfileJob.value)
+  api.saveProfileInfo(inputProfileName.value, inputProfileJob.value)
   .then(() => {
     profileName.textContent = inputProfileName.value;
     profileCaption.textContent = inputProfileJob.value;
@@ -43,7 +45,7 @@ formAdd.addEventListener("submit", (evt) => {
   const addInputList = Array.from(formAdd.querySelectorAll(obj.inputSelector));
   const submit = formAdd.elements.submit;
   submit.textContent = "Coхранение...";
-  saveCard(inputCardName.value, inputCardImage.value)
+  api.saveCard(inputCardName.value, inputCardImage.value)
   .then((card) => {
     addCard(cardsContainer, createCard(card.link, card.name, card._id, card.owner._id, card.likes));
     closePopup(popupAdd);
@@ -63,7 +65,7 @@ formAvatar.addEventListener("submit", (evt) => {
   const avatarInputList = Array.from(formAvatar.querySelectorAll(obj.inputSelector));
   const submit = formAvatar.elements.submit;
   submit.textContent = "Coхранение...";
-  saveProfileAvatar(inputProfileAvatar.value)
+  api.saveProfileAvatar(inputProfileAvatar.value)
   .then(() => {
     profileAvatar.setAttribute("src", inputProfileAvatar.value);
     closePopup(popupAvatar);
@@ -78,7 +80,7 @@ formAvatar.addEventListener("submit", (evt) => {
   })
 });
 
-Promise.all([getProfileInfo(), getAllCards()])
+Promise.all([api.getProfileInfo(), api.getAllCards()])
 .then(([info, cards]) => {
   profileName.textContent = info.name;
   profileCaption.textContent = info.about;

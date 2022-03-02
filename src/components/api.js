@@ -1,5 +1,3 @@
-import { config } from "../utils/constants.js";
-
 function checkStatus(res) {
   if(res.ok) {
     return res.json()
@@ -8,77 +6,84 @@ function checkStatus(res) {
   }
 }
 
-export  const getProfileInfo = () => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: "GET",
-    headers: config.headers
-  })
-  .then(checkStatus)
-}
+export class Api {
+  constructor(options) {
+    this._baseUrl = options.baseUrl;
+    this._headers = options.headers;
+  }
 
-export const saveProfileInfo = (name, about) => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: "PATCH",
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      about: about
+  getProfileInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "GET",
+      headers: this._headers
     })
-  })
-  .then(checkStatus) 
-}
+    .then(checkStatus)
+  }
 
-export const saveProfileAvatar = (avatar) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: "PATCH",
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar: avatar
+  saveProfileInfo(name, about) {
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        about: about
+      })
     })
-  })
-  .then(checkStatus)
-}
+    .then(checkStatus) 
+  }
 
-export const getAllCards = () => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: "GET",
-    headers: config.headers
-  })
-  .then(checkStatus)
-}
-
-export const saveCard = (name, link) => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: "POST",
-    headers: config.headers,
-    body: JSON.stringify({
-      name: name,
-      link: link
+  saveProfileAvatar(avatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: avatar
+      })
     })
-  })
-  .then(checkStatus)
-}
+    .then(checkStatus) 
+  }
 
-export const deleteCardFromServer = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: "DELETE",
-    headers: config.headers
-  })
-  .then(checkStatus)
-}
+  getAllCards() {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "GET",
+      headers: this._headers
+    })
+    .then(checkStatus)
+  }
 
-export const addLikeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: "PUT",
-    headers: config.headers
-  })
-  .then(checkStatus)
-}
+  saveCard(name, link) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name: name,
+        link: link
+      })
+    })
+    .then(checkStatus)
+  }
 
-export const removeLikeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: "DELETE",
-    headers: config.headers
-  })
-  .then(checkStatus)
+  deleteCardFromServer(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers
+    })
+    .then(checkStatus)
+  }
+
+  addLikeCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: "PUT",
+      headers: this._headers
+    })
+    .then(checkStatus)
+  }
+
+  removeLikeCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: "DELETE",
+      headers: this._headers
+    })
+    .then(checkStatus)
+  }
 }
