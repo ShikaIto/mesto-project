@@ -1,14 +1,56 @@
 import './index.css';
 
 import { enableValidation, toggleButtonState } from "../components/validate.js";
-import { closePopup } from "../components/modal.js";
-import { createCard, addCard } from "../components/card.js";
-import { Api } from "../components/api.js";
+import { closePopup, openPopup } from "../components/modal.js";
+import { Card, addCard } from "../components/Сard.js";
+import { Api } from "../components/Api.js";
 import { formEdit, formAvatar, formAdd, inputCardImage, inputCardName, inputProfileAvatar,
 inputProfileJob, inputProfileName, avatar, avatarBtn, profileAvatar, profileCaption,
-profileName, obj, cardsContainer, popupAdd, popupEdit, popupAvatar, config } from "../utils/constants.js";
+profileName, obj, cardsContainer, popupAdd, popupEdit, popupAvatar, 
+config, popupImage, popupImg, popupCaption, popupDeleteBtn, popupDelete } from "../utils/constants.js";
 
 export let profileId = "";
+
+function handleCardClick(card) {
+  popupCaption.textContent = card.name;
+  popupImg.src = card.link;
+  popupImg.alt = card.name;
+  openPopup(popupImage);
+}
+
+function handleLikeClick(card, id) {
+  if(card.isLiked()) {
+    api.removeLikeCard(id)
+    .then((res) => {
+      card.updateLikes(res); 
+    }) 
+    .catch((err) => {
+      console.log(err);
+    })
+  } else {
+    api.addLikeCard(id)
+    .then((res) => {
+      card.updateLikes(res); 
+    })  
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+}
+
+function handleDeleteClick(card, id) {
+  openPopup(popupDelete);
+  popupDeleteBtn.addEventListener("click", () => {
+    api.deleteCardFromServer(id)
+    .then(() => {
+      card.removeCard();
+      closePopup(popupDelete);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  });   
+}
 
 export const api = new Api(config);
 
@@ -46,8 +88,9 @@ formAdd.addEventListener("submit", (evt) => {
   const submit = formAdd.elements.submit;
   submit.textContent = "Coхранение...";
   api.saveCard(inputCardName.value, inputCardImage.value)
-  .then((card) => {
-    addCard(cardsContainer, createCard(card.link, card.name, card._id, card.owner._id, card.likes));
+  .then((item) => {
+    const card = new Card(item, handleCardClick, handleDeleteClick, handleLikeClick, profileId, "#card-template");
+    addCard(cardsContainer, card.getCard());
     closePopup(popupAdd);
     formAdd.reset();
     toggleButtonState(addInputList, submit, obj);
@@ -89,8 +132,9 @@ Promise.all([api.getProfileInfo(), api.getAllCards()])
   inputProfileJob.value = info.about;
   profileId = info._id;
 
-  cards.forEach((card) => {
-    addCard(cardsContainer, createCard(card.link, card.name, card._id, card.owner._id, card.likes));
+  cards.reverse().forEach((item) => {
+    const card = new Card(item, handleCardClick, handleDeleteClick, handleLikeClick, profileId, "#card-template");
+    addCard(cardsContainer, card.getCard());   
   });
 })
 .catch((err) => {
