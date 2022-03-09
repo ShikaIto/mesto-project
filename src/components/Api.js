@@ -11,7 +11,7 @@ export class Api {
     this._config = options;
   }
 
-  sendRequest (url, method, data) {
+  _sendRequest (url, method, data) {
     return fetch(url, {
       method: method,
       headers: this._config.headers,
@@ -21,7 +21,7 @@ export class Api {
   }
 
   getProfileInfo() {
-    return this.sendRequest(`${this._config.baseUrl}/users/me`, "GET", null);
+    return this._sendRequest(`${this._config.baseUrl}/users/me`, "GET", null);
   }
 
   saveProfileInfo(name, about) {
@@ -29,18 +29,18 @@ export class Api {
         name: name,
         about: about
     })
-    return this.sendRequest(`${this._config.baseUrl}/users/me`, "PATCH", data);
+    return this._sendRequest(`${this._config.baseUrl}/users/me`, "PATCH", data);
   }
 
   saveProfileAvatar(avatar) {
     const data = JSON.stringify({
       avatar: avatar
     })
-    return this.sendRequest(`${this._config.baseUrl}/users/me/avatar`, "PATCH", data);
+    return this._sendRequest(`${this._config.baseUrl}/users/me/avatar`, "PATCH", data);
   }
 
   getAllCards() {
-    return this.sendRequest(`${this._config.baseUrl}/cards`, "GET", null);
+    return this._sendRequest(`${this._config.baseUrl}/cards`, "GET", null);
   }
 
   saveCard(name, link) {
@@ -48,18 +48,18 @@ export class Api {
       name: name,
       link: link
     })
-    return this.sendRequest(`${this._config.baseUrl}/cards`, "POST", data);
+    return this._sendRequest(`${this._config.baseUrl}/cards`, "POST", data);
   }
 
   deleteCardFromServer(cardId) {
-    return this.sendRequest(`${this._config.baseUrl}/cards/${cardId}`, "DELETE", null);
+    return this._sendRequest(`${this._config.baseUrl}/cards/${cardId}`, "DELETE", null);
   }
 
   addLikeCard(cardId) {
-    return this.sendRequest(`${this._config.baseUrl}/cards/likes/${cardId}`, "PUT", null);
+    return this._sendRequest(`${this._config.baseUrl}/cards/likes/${cardId}`, "PUT", null);
   }
 
   removeLikeCard(cardId) {
-    return this.sendRequest(`${this._config.baseUrl}/cards/likes/${cardId}`, "DELETE", null);
+    return this._sendRequest(`${this._config.baseUrl}/cards/likes/${cardId}`, "DELETE", null);
   }
 }
