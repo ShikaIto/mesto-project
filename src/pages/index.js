@@ -10,6 +10,7 @@ profileName, obj, cardsContainer, popupAdd, popupEdit, popupAvatar,
 config, popupImage, popupImg, popupCaption, popupDeleteBtn, popupDelete } from "../utils/constants.js";
 
 export let profileId = "";
+let deleteElem, deleteId;
 
 function handleCardClick(card) {
   popupCaption.textContent = card.name;
@@ -40,19 +41,22 @@ function handleLikeClick(card, id) {
 
 function handleDeleteClick(card, id) {
   openPopup(popupDelete);
-  popupDeleteBtn.addEventListener("click", () => {
-    api.deleteCardFromServer(id)
-    .then(() => {
-      card.removeCard();
-      closePopup(popupDelete);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  });   
+  deleteElem = card;
+  deleteId = id;
 }
 
 export const api = new Api(config);
+
+popupDeleteBtn.addEventListener("click", () => {
+  api.deleteCardFromServer(deleteId)
+  .then(() => {
+    deleteElem.removeCard();
+    closePopup(popupDelete);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
+});
 
 enableValidation(obj);
 
