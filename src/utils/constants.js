@@ -11,13 +11,6 @@ export const avatarBtn = document.querySelector(".profile__avatar-button");
 export const profileName =  document.querySelector(".profile__name");
 export const profileCaption = document.querySelector(".profile__caption");
 export const profileAvatar = document.querySelector(".profile__avatar");
-export const obj = {
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__submit",
-  inactiveButtonClass: "popup__submit_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_active"
-};
 
 export const cardsContainer = document.querySelector(".cards__list");
 export const popupImage = document.querySelector("#popup-image");
@@ -32,6 +25,24 @@ export const popupAvatar = document.querySelector("#popup-avatar");
 export const buttonAvatar = document.querySelector(".profile__avatar-button");
 export const popupDelete = document.querySelector("#popup-delete");
 export const popupDeleteBtn = popupDelete.querySelector(".popup__submit");
+
+// переименовал в validationSetup
+export const obj = {
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit",
+  inactiveButtonClass: "popup__submit_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_active"
+};
+
+export const validationSetup = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_active'
+};
 
 export const config = {
     baseUrl: "https://mesto.nomoreparties.co/v1/plus-cohort-6",
