@@ -1,8 +1,4 @@
-export function addCard(container, element) {
-  container.prepend(element);
-}
-
-export class Card {
+export default class Card {
   constructor(card, handleCardClick, handleDeleteClick, handleLikeClick, userId, selector) {
     this.link = card.link;
     this.name = card.name;
