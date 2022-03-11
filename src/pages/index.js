@@ -45,11 +45,7 @@ function handleLikeClick(card, id) {
   }
 }
 
-function handleDeleteClick(card, id) {
-  openPopup(popupDelete);
-  deleteElem = card;
-  deleteId = id;
-}
+
 
 export const api = new Api(config);
 /*
@@ -84,8 +80,8 @@ export const imgPopup = new PopupWithImage("#popup-image");
 imgPopup.setEventListeners();
 
 // Delete card - надо переписать функцию удаления
-//export const confirmDeletePopup = new PopupWithForm("#popup-delete", handleDeleteClick);
-//confirmDeletePopup.setEventListeners();
+export const deletePopup = new PopupWithForm("#popup-delete", handleDeleteClick);
+deletePopup.setEventListeners();
 
 buttonAdd.addEventListener('click',() => {
   formValidators['add'].resetValidation();
@@ -124,6 +120,24 @@ avatar.addEventListener("mouseout", () => {
   avatarBtn.style.visibility = "hidden";
 });
 
+function handleDeleteClick() {
+  deletePopup.clearEventListeners();
+  deletePopup.handleClick = deleteCard.bind(this);
+  deletePopup.openPopup();
+}
+
+function deleteCard() {
+  popupDeleteBtn.addEventListener("click", () => {
+    api.deleteCardFromServer(deleteId)
+      .then(() => {
+        deleteElem.removeCard();
+        closePopup(popupDelete);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  });
+}
 
 /*
 formEdit.addEventListener("submit", (evt) => {
