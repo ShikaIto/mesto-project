@@ -8,9 +8,6 @@ export const inputProfileJob = formEdit.elements.job;
 export const inputProfileAvatar = formAvatar.elements.image;
 export const avatar = document.querySelector(".profile__avatar-container");
 export const avatarBtn = document.querySelector(".profile__avatar-button");
-export const profileName =  document.querySelector(".profile__name");
-export const profileCaption = document.querySelector(".profile__caption");
-export const profileAvatar = document.querySelector(".profile__avatar");
 
 export const buttonAdd = document.querySelector(".profile__add-button");
 export const buttonEdit = document.querySelector(".profile__edit-button");;

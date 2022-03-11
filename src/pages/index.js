@@ -6,13 +6,13 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Сard.js";
 import { Api } from "../components/Api.js";
 import Section from "../components/Section.js";
+import UserInfo from '../components/UserInfo';
 import {
-  formAvatar, formAdd, inputCardImage, inputCardName,inputProfileJob, inputProfileName, 
-  avatar, avatarBtn, profileAvatar, profileCaption,profileName, validationSetup, 
-  config, buttonAdd, buttonEdit, buttonAvatar
+  formAvatar, formAdd, formEdit, inputCardImage, inputCardName,inputProfileJob, inputProfileName, 
+  avatar, avatarBtn, validationSetup, config, buttonAdd, buttonEdit, buttonAvatar
 } from "../utils/constants.js";
 
-let profileId, deleteElem, deleteId;
+let deleteElem, deleteId;
 
 
 function handleCardClick(card) {
@@ -57,12 +57,11 @@ function handleDeleteFormSubmit() {
 }
 
 function editFormHandler() {
-  const submit = formAdd.elements.submit;
+  const submit = formEdit.elements.submit;
   submit.textContent = "Coхранение...";
   api.saveProfileInfo(inputProfileName.value, inputProfileJob.value)
     .then(() => {
-      profileName.textContent = inputProfileName.value;
-      profileCaption.textContent = inputProfileJob.value;
+      profileInfo.setUserInfo(inputProfileName.value, inputProfileJob.value);
       profileEditPopup.closePopup();
     })
     .catch((err) => {
@@ -70,6 +69,7 @@ function editFormHandler() {
     })
     .finally(() => {
       submit.textContent = "Сохранить";
+
     })
 }
 
@@ -79,7 +79,7 @@ function handleAddFormSubmit() {
   api.saveCard(inputCardName.value, inputCardImage.value)
     .then((item) => {
       cardsContainer.renderItem(item);
-      profileAddPopup.form.reset();
+      formAdd.reset();
       profileAddPopup.closePopup();
     })
     .catch((err) => {
@@ -97,18 +97,23 @@ function editAvatar(){
   submit.textContent = "Coхранение...";
   api.saveProfileAvatar(link)
     .then(data=>{
-      profileAvatar.src = data.avatar;
+      profileInfo.setUserAvatar(data.avatar);
       avatarPopup.closePopup();
-      avatarPopup.form.reset();
+      formAvatar.reset();
     })
     .catch(err => {
       console.log(err);
     })
+    .finally(() => {
+      submit.textContent = "Сохранить";
+    })
 }
+
+const profileInfo = new UserInfo(".profile__name", ".profile__caption", ".profile__avatar");
 
 const cardsContainer = new Section({
   renderer: (item) => {
-    const card = new Card(item, handleCardClick, handleDeleteClick, handleLikeClick, profileId, "#card-template");
+    const card = new Card(item, handleCardClick, handleDeleteClick, handleLikeClick, profileInfo.getUserId(), "#card-template");
     cardsContainer.addItem(card.getCard());
   }
 }, ".cards__list");
@@ -141,6 +146,9 @@ buttonAdd.addEventListener('click',() => {
 });
 buttonEdit.addEventListener('click', () => {
   formValidators['edit'].resetValidation();
+  const info = profileInfo.getUserInfo();
+  inputProfileName.value = info.name;
+  inputProfileJob.value = info.about;
   profileEditPopup.openPopup();
 });
 buttonAvatar.addEventListener('click', ()=> {
@@ -164,12 +172,9 @@ const enableValidation = (config) => {
 
 Promise.all([api.getProfileInfo(), api.getAllCards()])
 .then(([info, cards]) => {
-  profileName.textContent = info.name;
-  profileCaption.textContent = info.about;
-  profileAvatar.src = info.avatar;
-  inputProfileName.value = info.name;
-  inputProfileJob.value = info.about;
-  profileId = info._id;
+  profileInfo.setUserInfo(info.name, info.about);
+  profileInfo.setUserAvatar(info.avatar);
+  profileInfo.setUserId(info._id);
 
   cardsContainer.renderItems(cards);
 })
