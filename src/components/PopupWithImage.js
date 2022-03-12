@@ -8,9 +8,9 @@ export default class PopupWithImage extends Popup{
 		this.imgCapture = document.querySelector(".popup__image-caption");
 	}
 
-	openPopup(name, imgLink) {
+	openPopup(name, img) {
 		super.openPopup();
-		this.img.src = imgLink;
+		this.img.src = img;
 		this.img.alt = name;
 		this.imgCapture.textContent = name;
 	}

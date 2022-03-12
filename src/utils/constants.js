@@ -5,7 +5,6 @@ export const inputCardImage = formAdd.elements.image;
 export const inputCardName = formAdd.elements.name;
 export const inputProfileName = formEdit.elements.name;
 export const inputProfileJob = formEdit.elements.job;
-export const inputProfileAvatar = formAvatar.elements.image;
 export const avatar = document.querySelector(".profile__avatar-container");
 export const avatarBtn = document.querySelector(".profile__avatar-button");
 

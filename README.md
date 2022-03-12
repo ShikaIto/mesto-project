@@ -1,16 +1,27 @@
-# Проект: Место
+# Проект: Mesto Russia
 
-### Адаптивная вёрстка
+### Описание
+
+- Страница приложения с фотографиями.
+- Реализована адаптивная верстка.
+- Реализованы модальные окна.
+- Реализованы возможности:
+  - добавлять и удалять карточки элементов,
+  - отмечать понравившиеся карточки,
+  - редактировать информацию в профиле,
+  - редактировать аватар.
+- Сайт подключен к серверу.
 
 ### Технологии
 
-- Flex
-- Grid Layout
-- Медиа-запросы CSS
-- Java Script
+- HTML
+- CSS (Flex & Grid / @media / BEM)
+- JavaScript (OOP / Webpack / Modules / API requests)
 
-#### Планируется добавить еще немного Java Script
+### Ссылка
 
-### GitHub
+https://shikaito.github.io/mesto-project/
 
-[ссылка на проект](https://shikaito.github.io/mesto-project/)
+### Сделали
+
+https://github.com/ShikaIto && https://github.com/radiovorobev
