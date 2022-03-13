@@ -8,7 +8,7 @@ import { Api } from "../components/Api.js";
 import Section from "../components/Section.js";
 import UserInfo from '../components/UserInfo';
 import {
-  formAvatar, formAdd, formEdit, inputCardImage, inputCardName,inputProfileJob, inputProfileName, 
+  formAvatar, formAdd, formEdit, inputProfileJob, inputProfileName,
   avatar, avatarBtn, validationSetup, config, buttonAdd, buttonEdit, buttonAvatar
 } from "../utils/constants.js";
 
@@ -59,9 +59,10 @@ function handleDeleteFormSubmit() {
 function editFormHandler() {
   const submit = formEdit.elements.submit;
   submit.textContent = "Coхранение...";
-  api.saveProfileInfo(inputProfileName.value, inputProfileJob.value)
+  const { name, job } = profileEditPopup._getInputValues();
+  api.saveProfileInfo(name, job)
     .then(() => {
-      profileInfo.setUserInfo(inputProfileName.value, inputProfileJob.value);
+      profileInfo.setUserInfo(name, job);
       profileEditPopup.closePopup();
     })
     .catch((err) => {
@@ -76,7 +77,8 @@ function editFormHandler() {
 function handleAddFormSubmit() {
   const submit = formAdd.elements.submit;
   submit.textContent = "Coхранение...";
-  api.saveCard(inputCardName.value, inputCardImage.value)
+  const { name, image } = profileAddPopup._getInputValues();
+  api.saveCard(name, image)
     .then((item) => {
       cardsContainer.renderItem(item);
       profileAddPopup.closePopup();
@@ -90,11 +92,10 @@ function handleAddFormSubmit() {
 }
 
 function editAvatar(){
-  const elements = avatarPopup.getFormElements();
-  const link = elements['avatar-url'].value;
   const submit = formAvatar.elements.submit;
+  const { image } = avatarPopup._getInputValues();
   submit.textContent = "Coхранение...";
-  api.saveProfileAvatar(link)
+  api.saveProfileAvatar(image)
     .then(data=>{
       profileInfo.setUserAvatar(data.avatar);
       avatarPopup.closePopup();
