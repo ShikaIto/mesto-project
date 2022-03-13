@@ -46,6 +46,7 @@ function handleDeleteClick(card, id) {
 }
 
 function handleDeleteFormSubmit() {
+  confirmDeletePopup.renderLoading(true, "Да", "Удаление...");
   api.deleteCardFromServer(deleteId)
   .then(() => {
     deleteElem.removeCard();
@@ -54,12 +55,16 @@ function handleDeleteFormSubmit() {
   .catch((err) => {
     console.log(err);
   })
+  .finally(() => {
+    confirmDeletePopup.renderLoading(false, "Да");
+  })
 }
 
 function editFormHandler() {
   const submit = formEdit.elements.submit;
   submit.textContent = "Coхранение...";
   const { name, job } = profileEditPopup._getInputValues();
+  profileEditPopup.renderLoading(true);
   api.saveProfileInfo(name, job)
     .then(() => {
       profileInfo.setUserInfo(name, job);
@@ -69,8 +74,7 @@ function editFormHandler() {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Сохранить";
-
+      profileEditPopup.renderLoading(false);
     })
 }
 
@@ -78,6 +82,7 @@ function handleAddFormSubmit() {
   const submit = formAdd.elements.submit;
   submit.textContent = "Coхранение...";
   const { name, image } = profileAddPopup._getInputValues();
+  profileAddPopup.renderLoading(true);
   api.saveCard(name, image)
     .then((item) => {
       cardsContainer.renderItem(item);
@@ -87,7 +92,7 @@ function handleAddFormSubmit() {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Создать";
+      profileAddPopup.renderLoading(false, "Создать");
     })
 }
 
@@ -95,16 +100,17 @@ function editAvatar(){
   const submit = formAvatar.elements.submit;
   const { image } = avatarPopup._getInputValues();
   submit.textContent = "Coхранение...";
+  avatarPopup.renderLoading(true);
   api.saveProfileAvatar(image)
     .then(data=>{
-      profileInfo.setUserAvatar(data.avatar);
+      profileInfo.setUserInfo(data);
       avatarPopup.closePopup();
     })
     .catch(err => {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Сохранить";
+      avatarPopup.renderLoading(false);
     })
 }
 
@@ -171,9 +177,7 @@ const enableValidation = (config) => {
 
 Promise.all([api.getProfileInfo(), api.getAllCards()])
 .then(([info, cards]) => {
-  profileInfo.setUserInfo(info.name, info.about);
-  profileInfo.setUserAvatar(info.avatar);
-  profileInfo.setUserId(info._id);
+  profileInfo.setUserInfo(info);
 
   cardsContainer.renderItems(cards);
 })
