@@ -79,7 +79,6 @@ function handleAddFormSubmit() {
   api.saveCard(inputCardName.value, inputCardImage.value)
     .then((item) => {
       cardsContainer.renderItem(item);
-      formAdd.reset();
       profileAddPopup.closePopup();
     })
     .catch((err) => {
@@ -99,7 +98,6 @@ function editAvatar(){
     .then(data=>{
       profileInfo.setUserAvatar(data.avatar);
       avatarPopup.closePopup();
-      formAvatar.reset();
     })
     .catch(err => {
       console.log(err);
