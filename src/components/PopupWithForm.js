@@ -9,6 +9,14 @@ export default class PopupWithForm extends Popup{
 		this.button = this.form.querySelector(".popup__submit");
 	}
 
+	renderLoading(isLoading, text = "Сохранить", loadingText = "Сохранение...") {
+	  if (isLoading) {
+		this.button.textContent = loadingText;
+	  } else {
+        this.button.textContent = text;
+	  }
+	}
+
 	getFormElements(){
 		return this.form.elements;
 	}

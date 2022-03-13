@@ -46,6 +46,7 @@ function handleDeleteClick(card, id) {
 }
 
 function handleDeleteFormSubmit() {
+  confirmDeletePopup.renderLoading(true, "Да", "Удаление...");
   api.deleteCardFromServer(deleteId)
   .then(() => {
     deleteElem.removeCard();
@@ -54,28 +55,28 @@ function handleDeleteFormSubmit() {
   .catch((err) => {
     console.log(err);
   })
+  .finally(() => {
+    confirmDeletePopup.renderLoading(false, "Да");
+  })
 }
 
 function editFormHandler() {
-  const submit = formEdit.elements.submit;
-  submit.textContent = "Coхранение...";
+  profileEditPopup.renderLoading(true);
   api.saveProfileInfo(inputProfileName.value, inputProfileJob.value)
-    .then(() => {
-      profileInfo.setUserInfo(inputProfileName.value, inputProfileJob.value);
+    .then((data) => {
+      profileInfo.setUserInfo(data);
       profileEditPopup.closePopup();
     })
     .catch((err) => {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Сохранить";
-
+      profileEditPopup.renderLoading(false);
     })
 }
 
 function handleAddFormSubmit() {
-  const submit = formAdd.elements.submit;
-  submit.textContent = "Coхранение...";
+  profileAddPopup.renderLoading(true);
   api.saveCard(inputCardName.value, inputCardImage.value)
     .then((item) => {
       cardsContainer.renderItem(item);
@@ -85,25 +86,24 @@ function handleAddFormSubmit() {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Создать";
+      profileAddPopup.renderLoading(false, "Создать");
     })
 }
 
 function editAvatar(){
   const elements = avatarPopup.getFormElements();
   const link = elements['avatar-url'].value;
-  const submit = formAvatar.elements.submit;
-  submit.textContent = "Coхранение...";
+  avatarPopup.renderLoading(true);
   api.saveProfileAvatar(link)
     .then(data=>{
-      profileInfo.setUserAvatar(data.avatar);
+      profileInfo.setUserInfo(data);
       avatarPopup.closePopup();
     })
     .catch(err => {
       console.log(err);
     })
     .finally(() => {
-      submit.textContent = "Сохранить";
+      avatarPopup.renderLoading(false);
     })
 }
 
@@ -170,9 +170,7 @@ const enableValidation = (config) => {
 
 Promise.all([api.getProfileInfo(), api.getAllCards()])
 .then(([info, cards]) => {
-  profileInfo.setUserInfo(info.name, info.about);
-  profileInfo.setUserAvatar(info.avatar);
-  profileInfo.setUserId(info._id);
+  profileInfo.setUserInfo(info);
 
   cardsContainer.renderItems(cards);
 })
