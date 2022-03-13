@@ -1,14 +1,14 @@
-function checkStatus(res) {
-  if(res.ok) {
-    return res.json()
-  } else {
-    return Promise.reject(`Ошибка: ${res.status}`)
-  }
-}
-
 export class Api {
   constructor(options) {
     this._config = options;
+  }
+
+  _checkStatus(res) {
+    if(res.ok) {
+      return res.json()
+    } else {
+      return Promise.reject(`Ошибка: ${res.status}`)
+    }
   }
 
   _sendRequest (url, method, data) {
@@ -17,7 +17,7 @@ export class Api {
       headers: this._config.headers,
       body: data
     })
-      .then(checkStatus);
+      .then(this._checkStatus);
   }
 
   getProfileInfo() {
