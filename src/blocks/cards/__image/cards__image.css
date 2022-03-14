@@ -2,4 +2,5 @@
   width: 282px;
   height: 282px;
   background-color: rgba(0, 0, 0, 0.3);
+  object-fit: cover;
 }
