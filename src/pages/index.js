@@ -7,13 +7,10 @@ import Card from "../components/Сard.js";
 import { Api } from "../components/Api.js";
 import Section from "../components/Section.js";
 import UserInfo from '../components/UserInfo';
-import {
-  formAvatar, formAdd, formEdit, inputProfileJob, inputProfileName,
-  avatar, avatarBtn, validationSetup, config, buttonAdd, buttonEdit, buttonAvatar
-} from "../utils/constants.js";
+import { inputProfileJob, inputProfileName,avatar, avatarBtn, validationSetup, 
+  config, buttonAdd, buttonEdit, buttonAvatar } from "../utils/constants.js";
 
 let deleteElem, deleteId;
-
 
 function handleCardClick(card) {
   imgPopup.openPopup(card.name, card.link);
@@ -61,13 +58,11 @@ function handleDeleteFormSubmit() {
 }
 
 function editFormHandler() {
-  const submit = formEdit.elements.submit;
-  submit.textContent = "Coхранение...";
-  const { name, job } = profileEditPopup._getInputValues();
+  const { name, job } = profileEditPopup.getInputValues();
   profileEditPopup.renderLoading(true);
   api.saveProfileInfo(name, job)
-    .then(() => {
-      profileInfo.setUserInfo(name, job);
+    .then((res) => {
+      profileInfo.setUserInfo(res);
       profileEditPopup.closePopup();
     })
     .catch((err) => {
@@ -79,9 +74,7 @@ function editFormHandler() {
 }
 
 function handleAddFormSubmit() {
-  const submit = formAdd.elements.submit;
-  submit.textContent = "Coхранение...";
-  const { name, image } = profileAddPopup._getInputValues();
+  const { name, image } = profileAddPopup.getInputValues();
   profileAddPopup.renderLoading(true);
   api.saveCard(name, image)
     .then((item) => {
@@ -97,9 +90,7 @@ function handleAddFormSubmit() {
 }
 
 function editAvatar(){
-  const submit = formAvatar.elements.submit;
-  const { image } = avatarPopup._getInputValues();
-  submit.textContent = "Coхранение...";
+  const { image } = avatarPopup.getInputValues();;
   avatarPopup.renderLoading(true);
   api.saveProfileAvatar(image)
     .then(data=>{

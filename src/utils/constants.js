@@ -1,5 +1,4 @@
 export const formEdit = document.forms.edit;
-export const formAvatar = document.forms.avatar;
 export const formAdd = document.forms.add;
 export const inputCardImage = formAdd.elements.image;
 export const inputCardName = formAdd.elements.name;
